@@ -30,7 +30,7 @@ Cache even Longer
 ## Summary
 
 ```text
-Extends how long Firefox caches static files, with configurable lifetimes, a per-site popup, stale-while-revalidate, fingerprint-only mode and safety rules for private or uncacheable responses. A renamed fork of Cache Longer 1.0.
+Extends how long Firefox caches static files, with configurable lifetimes, a per-site popup, stale-while-revalidate, fingerprint-only mode and safety rules for private or uncacheable responses. A renamed fork of Cache Longer 1.0 by Rimu Atkinson.
 ```
 
 ## Full description
