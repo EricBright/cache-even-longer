@@ -110,7 +110,7 @@ available anyway; reviewers appreciate reproduction instructions.
 ## Route B — unlisted signing with `web-ext`
 
 ```sh
-cd firefox-cache-longer
+cd cache-even-longer
 export WEB_EXT_API_KEY="user:12345:67"
 export WEB_EXT_API_SECRET="0123456789abcdef..."
 npm run sign

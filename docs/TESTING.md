@@ -13,7 +13,7 @@ headless setup used for that check was not driven through the fixture page.
 ## Automated tests
 
 ```sh
-cd firefox-cache-longer
+cd cache-even-longer
 npm test
 ```
 

@@ -439,7 +439,7 @@ values consistent.
 Run them with:
 
 ```sh
-cd firefox-cache-longer
+cd cache-even-longer
 npm test
 npm run check
 npm run build

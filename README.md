@@ -142,7 +142,7 @@ detail, including why some directives are deliberately preserved.
 ## Project layout
 
 ```text
-firefox-cache-longer/
+cache-even-longer/
 ├── .github/workflows/ci.yml  # CI: tests, validation and unsigned build
 ├── cache-longer-source/   # pristine signed 1.0 download (do not edit)
 ├── dist/                  # generated XPI, checksum, signed artifacts (ignored)

@@ -99,7 +99,7 @@ update. Otherwise, keep the generated fork GUID.
 ### 2.3 Sign
 
 ```sh
-cd firefox-cache-longer
+cd cache-even-longer
 npm install                 # installs web-ext (one time)
 export WEB_EXT_API_KEY="user:12345:67"
 export WEB_EXT_API_SECRET="0123456789abcdef..."
@@ -148,7 +148,7 @@ Route 2.
 ## Route 4 — live development with `web-ext run`
 
 ```sh
-cd firefox-cache-longer
+cd cache-even-longer
 npm install
 npm run test-server     # optional: fixture page on http://127.0.0.1:8787/
 npm run dev             # in a second terminal
