@@ -1,0 +1,23 @@
+{
+  "name": "cache-even-longer",
+  "version": "2.1.0",
+  "private": true,
+  "description": "Cache even Longer: a Firefox extension that extends cache lifetimes for static resources, safely and configurably.",
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "check": "node scripts/build.mjs --check",
+    "build": "node scripts/build.mjs",
+    "lint": "web-ext lint --source-dir src",
+    "dev": "web-ext run --source-dir src --start-url http://127.0.0.1:8787/",
+    "sign": "web-ext sign --source-dir src --artifacts-dir dist/signed --channel unlisted",
+    "icons": "sh scripts/render-icons.sh",
+    "test-server": "node scripts/test-server.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "web-ext": "^10.8.0"
+  }
+}

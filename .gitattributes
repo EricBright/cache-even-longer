@@ -1,0 +1,43 @@
+# Normalise line endings in the repository. Source, scripts and tests must keep
+# LF even when checked out on Windows so the build behaves identically.
+* text=auto eol=lf
+
+*.js text eol=lf
+*.mjs text eol=lf
+*.cjs text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.sh text eol=lf
+*.svg text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.txt text eol=lf
+*.sha256 text eol=lf
+
+# Archives, images and signing material are binary: no EOL conversion, no diffs.
+*.xpi binary
+*.zip binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.rsa binary
+*.sig binary
+
+# AppleDouble files preserved inside the original 1.0 archive are binary
+# evidence; without this rule Git could normalise their bytes on checkout.
+._* binary
+
+# The upstream 1.0 files are pristine evidence, so do not flag their original
+# whitespace (or rewrite it) in diffs.
+cache-longer-source/** -whitespace
+
+# GitHub language statistics: the upstream download is vendored evidence and
+# the design/audit material is documentation, not application code.
+cache-longer-source/** linguist-vendored
+docs/** linguist-documentation
+dist/** linguist-generated

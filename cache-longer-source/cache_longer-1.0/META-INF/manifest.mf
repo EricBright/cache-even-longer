@@ -1,0 +1,42 @@
+Manifest-Version: 1.0
+
+Name: cache_longer.js
+Digest-Algorithms: SHA1 SHA256
+SHA1-Digest: 62UgzfKn9kXVK0E9QeclfYRkqvg=
+SHA256-Digest: n16OvyNqzvl1X3OMbC8NAgh2VzVDyxuXC0spGXZ3Ktg=
+
+Name: icon.png
+Digest-Algorithms: SHA1 SHA256
+SHA1-Digest: 7YD2t4/sD9mKefFpGaswsmOkpQc=
+SHA256-Digest: io/AGd7m/Pv3BDqM6zgQjGGDDfsHqK0k4IRu8jmoxyw=
+
+Name: manifest.json
+Digest-Algorithms: SHA1 SHA256
+SHA1-Digest: x9VisT9no9OXjp5y7r0SCiqgku8=
+SHA256-Digest: 9YUD8lRqs+iVWLyfUggp9xs4sAKOXqESZD/AqlpaLWI=
+
+Name: __MACOSX/._cache_longer.js
+Digest-Algorithms: SHA1 SHA256
+SHA1-Digest: I5XkWkOxeOkLthgTKqITAVMj4kk=
+SHA256-Digest: DKFV8JuwNQk33x3crkkPT0Htvd7xJ6+wZevPDRid2yA=
+
+Name: __MACOSX/._icon.png
+Digest-Algorithms: SHA1 SHA256
+SHA1-Digest: WBYKDHOpL3H59lVqwESwhldAbOY=
+SHA256-Digest: eEUiDEsVTCXOd2b/c26NeVu8JIZf18Bto8AWPVO6fLQ=
+
+Name: __MACOSX/._manifest.json
+Digest-Algorithms: SHA1 SHA256
+SHA1-Digest: 1uH1Tdq0cts8MtKQAiPs0Yuk8wA=
+SHA256-Digest: JrA9ZPz4uwel6ijg+hgSSegN3ZcSALzGRNgnT7JM+f0=
+
+Name: META-INF/cose.manifest
+Digest-Algorithms: SHA1 SHA256
+SHA1-Digest: ujFAs9UVTnqEWTW2LQR8q1CEOQA=
+SHA256-Digest: lKjxGxfvPZsXpeOWD5CDnU8Lk9BJNGZgQdVqjps/brA=
+
+Name: META-INF/cose.sig
+Digest-Algorithms: SHA1 SHA256
+SHA1-Digest: ERYtH6bG4BCI1FtSIujtA91lrBc=
+SHA256-Digest: UNfAjBI3eT/i+81rOhBAEfjKfa1dctd/ohIUpENiJT4=
+

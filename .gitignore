@@ -1,0 +1,52 @@
+# ---------------------------------------------------------------------------
+# Cache even Longer — repository hygiene
+# ---------------------------------------------------------------------------
+
+# Build output and signed packages. Rebuild with `npm run build`.
+/dist/
+/web-ext-artifacts/
+
+# Dependencies
+node_modules/
+
+# Local scratch space; experiments belong here, not in src/ or tests/.
+.scratch/
+
+# Logs, test output and tool caches
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+coverage/
+.nyc_output/
+.eslintcache
+.stylelintcache
+
+# Local configuration, credentials and signing material. Never commit these.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+
+# Editors and operating-system metadata
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# The pristine upstream 1.0 download under cache-longer-source/ is tracked
+# deliberately as audit evidence. Do not add it here.

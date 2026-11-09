@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=360, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Cache even Longer</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header class="header">
+      <img class="icon" src="../icons/icon-48.png" width="36" height="36" alt="" />
+      <div class="title">
+        <h1>Cache even Longer</h1>
+        <p id="summary">Loading…</p>
+      </div>
+      <label class="toggle" for="enabled">
+        <input type="checkbox" id="enabled" />
+        <span class="toggle-track" aria-hidden="true"></span>
+        <span class="visually-hidden">Enabled</span>
+      </label>
+    </header>
+
+    <main class="main">
+      <section class="site" aria-labelledby="site-heading">
+        <h2 id="site-heading">Current site</h2>
+        <p id="site-host" class="host">…</p>
+        <p id="site-status" class="status" role="status" aria-live="polite">Loading…</p>
+        <button type="button" id="site-toggle" class="button secondary" disabled>
+          Loading…
+        </button>
+      </section>
+
+      <section class="quick" aria-labelledby="lifetime-heading">
+        <label for="lifetime" id="lifetime-heading">Cache lifetime</label>
+        <select id="lifetime"></select>
+        <p id="policy-summary" class="hint"></p>
+      </section>
+
+      <p id="message" class="message" role="status" aria-live="polite"></p>
+    </main>
+
+    <footer class="footer">
+      <button type="button" id="open-settings" class="link">All settings</button>
+      <span id="version"></span>
+    </footer>
+
+    <script src="../lib/cache-policy.js"></script>
+    <script src="../lib/settings.js"></script>
+    <script src="../lib/site-control.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

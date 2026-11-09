@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Cache even Longer — Settings</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="app-header">
+        <img class="app-icon" src="../icons/icon-96.png" width="56" height="56" alt="" />
+        <div class="app-heading">
+          <h1>Cache even Longer</h1>
+          <p>Keep static files in the browser cache for longer.</p>
+        </div>
+        <label class="toggle" for="enabled">
+          <input type="checkbox" id="enabled" name="enabled" />
+          <span class="toggle-track" aria-hidden="true"></span>
+          <span class="toggle-text">Enabled</span>
+        </label>
+      </header>
+
+      <noscript>
+        <p class="notice notice-error">Settings need JavaScript to load and save.</p>
+      </noscript>
+
+      <form id="settings-form" novalidate>
+        <section class="card" aria-labelledby="profiles-heading">
+          <h2 id="profiles-heading">Quick profiles</h2>
+          <p class="section-help">
+            Start from a preset and fine-tune below. Profiles never change your site exclusions.
+          </p>
+          <div class="profile-grid" role="group" aria-label="Cache policy profiles">
+            <button type="button" class="profile" data-preset="safe">
+              <strong>Safe</strong>
+              <span>30 days · fingerprinted files only · no stale serving</span>
+            </button>
+            <button type="button" class="profile" data-preset="balanced">
+              <strong>Balanced</strong>
+              <span>180 days · 7-day stale-while-revalidate window</span>
+            </button>
+            <button type="button" class="profile" data-preset="aggressive">
+              <strong>Aggressive</strong>
+              <span>365 days · 30-day stale window · includes media</span>
+            </button>
+          </div>
+          <p class="hint" id="profile-status" role="status" aria-live="polite"></p>
+        </section>
+
+        <section class="card" aria-labelledby="lifetime-heading">
+          <h2 id="lifetime-heading">Cache lifetime</h2>
+          <p class="section-help">
+            How long Firefox may reuse a cached file before asking the server whether it changed.
+          </p>
+
+          <div class="duration-row">
+            <label for="duration-days">Keep files for</label>
+            <input
+              id="duration-days"
+              name="durationDays"
+              type="number"
+              min="1"
+              max="3650"
+              step="1"
+              inputmode="numeric"
+              aria-describedby="duration-error"
+              required
+            />
+            <span class="unit">days</span>
+          </div>
+
+          <div class="presets" role="group" aria-label="Cache lifetime presets">
+            <button type="button" class="preset" data-days="30">30 days</button>
+            <button type="button" class="preset" data-days="90">90 days</button>
+            <button type="button" class="preset" data-days="180">180 days</button>
+            <button type="button" class="preset" data-days="365">1 year</button>
+          </div>
+
+          <p class="field-error" id="duration-error" role="alert" hidden></p>
+
+          <label class="check">
+            <input type="checkbox" id="swr-enabled" name="staleWhileRevalidate" />
+            <span>
+              <strong>Serve stale while revalidating</strong>
+              <span class="hint">
+                After a file expires, show the cached copy immediately while Firefox refreshes it
+                in the background. This can show stale content for the window below.
+                Shift+Reload still bypasses the cache completely.
+              </span>
+            </span>
+          </label>
+
+          <div class="duration-row swr-row">
+            <label for="swr-days">Stale window</label>
+            <input
+              id="swr-days"
+              name="staleWhileRevalidateDays"
+              type="number"
+              min="1"
+              max="365"
+              step="1"
+              inputmode="numeric"
+              aria-describedby="swr-error"
+            />
+            <span class="unit">days</span>
+          </div>
+          <p class="field-error" id="swr-error" role="alert" hidden></p>
+
+          <label class="check">
+            <input type="checkbox" id="never-shorten" name="neverShorten" />
+            <span>
+              <strong>Never shorten an existing cache lifetime</strong>
+              <span class="hint">
+                If a server already asks for a longer period than the one above, leave that response
+                untouched.
+              </span>
+            </span>
+          </label>
+        </section>
+
+        <section class="card" aria-labelledby="safety-heading">
+          <h2 id="safety-heading">Safety rules</h2>
+          <p class="section-help">
+            Some responses are deliberately marked as uncacheable. Overriding those can expose
+            private data or break sign-in flows, so they are skipped by default.
+          </p>
+
+          <label class="check">
+            <input type="checkbox" id="respect-no-store" name="respectNoStore" />
+            <span>
+              <strong>Respect <code>Cache-Control: no-store</code></strong>
+              <span class="hint">
+                <code>no-store</code> means “never write this to disk”. This covers account pages,
+                one-time tokens and other sensitive responses.
+              </span>
+            </span>
+          </label>
+
+          <label class="check">
+            <input type="checkbox" id="skip-set-cookie" name="skipSetCookie" />
+            <span>
+              <strong>Skip responses that set cookies</strong>
+              <span class="hint">
+                A response with <code>Set-Cookie</code> is usually personalised, so caching it for
+                months can show one visitor another visitor’s data.
+              </span>
+            </span>
+          </label>
+
+          <label class="check">
+            <input type="checkbox" id="only-fingerprinted" name="onlyFingerprinted" />
+            <span>
+              <strong>Only extend fingerprinted URLs</strong>
+              <span class="hint">
+                Only modify files whose names contain a content hash or a version query, such as
+                <code>app.4f3c2a91.js</code> or <code>app.css?v=20240101</code>. This is the safest
+                choice for aggressive lifetimes.
+              </span>
+            </span>
+          </label>
+        </section>
+
+        <section class="card" aria-labelledby="types-heading">
+          <h2 id="types-heading">Resource types</h2>
+          <p class="section-help">
+            Only subresources are modified. The page itself, frames, redirects and error responses
+            are never changed.
+          </p>
+          <div id="resource-types" class="type-grid"></div>
+        </section>
+
+        <section class="card" aria-labelledby="exclusions-heading">
+          <h2 id="exclusions-heading">Excluded sites and URLs</h2>
+          <p class="section-help">
+            One pattern per line. <code>*</code> matches any text, and lines starting with
+            <code>#</code> are comments.
+          </p>
+          <label class="visually-hidden" for="excluded-urls">Excluded URL patterns</label>
+          <textarea
+            id="excluded-urls"
+            name="excludedUrls"
+            rows="5"
+            spellcheck="false"
+            autocapitalize="off"
+            autocomplete="off"
+            placeholder="example.com&#10;*.example.org&#10;example.net/api/*"
+          ></textarea>
+
+          <div class="exclusion-actions">
+            <button type="button" class="button secondary" id="import-exclusions">
+              Import list
+            </button>
+            <input
+              type="file"
+              id="import-exclusions-file"
+              accept=".txt,.text,text/plain"
+              hidden
+            />
+            <button type="button" class="button secondary" id="export-exclusions">
+              Export list
+            </button>
+            <p class="hint export-status" id="export-status" role="status" aria-live="polite"></p>
+          </div>
+
+          <details class="examples">
+            <summary>Pattern examples</summary>
+            <ul>
+              <li><code>example.com</code> — that exact host, any path, http or https.</li>
+              <li><code>*.example.com</code> — any subdomain, but not <code>example.com</code> itself.</li>
+              <li><code>example.com/api/*</code> — only paths under <code>/api/</code>.</li>
+              <li><code>https://example.com/*</code> — only over HTTPS.</li>
+            </ul>
+          </details>
+        </section>
+
+        <section class="card" aria-labelledby="advanced-heading">
+          <h2 id="advanced-heading">Advanced</h2>
+          <label class="check">
+            <input type="checkbox" id="debug-logging" name="debugLogging" />
+            <span>
+              <strong>Log decisions to the browser console</strong>
+              <span class="hint">
+                Useful when a site misbehaves. Open <code>about:debugging</code>, inspect this
+                extension and look at the console.
+              </span>
+            </span>
+          </label>
+        </section>
+
+        <div class="actions">
+          <button type="submit" class="button primary" id="save-button">Save settings</button>
+          <button type="button" class="button secondary" id="reset-button">Restore defaults</button>
+          <p class="status" id="status" role="status" aria-live="polite"></p>
+        </div>
+        <p class="save-note">
+          Settings apply immediately to new responses. Files that are already cached keep their old
+          lifetime until they expire or the page is reloaded.
+        </p>
+      </form>
+
+      <footer class="app-footer">
+        <p>
+          Cache even Longer <span id="version"></span> · original add-on by
+          <a href="https://rimu.geek.nz" rel="noreferrer">Rimu Atkinson</a>
+        </p>
+        <p>Settings are stored locally in Firefox and are never sent anywhere.</p>
+      </footer>
+    </main>
+
+    <script src="../lib/cache-policy.js"></script>
+    <script src="../lib/settings.js"></script>
+    <script src="../lib/site-control.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>

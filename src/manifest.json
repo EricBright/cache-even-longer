@@ -1,0 +1,53 @@
+{
+  "manifest_version": 2,
+
+  "name": "Cache even Longer",
+  "version": "2.1.0",
+  "description": "Extends how long Firefox caches images, stylesheets, scripts and fonts. A renamed fork of Cache Longer.",
+
+  "author": "Rimu Atkinson; Cache even Longer contributors",
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{b2aeb8c2-b8ec-4375-afc3-21d58bcc6b3a}",
+      "strict_min_version": "115.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  },
+
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png"
+  },
+
+  "browser_action": {
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png"
+    },
+    "default_title": "Cache even Longer — Site controls",
+    "default_popup": "popup/popup.html"
+  },
+
+  "background": {
+    "scripts": ["lib/cache-policy.js", "lib/settings.js", "background.js"]
+  },
+
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  },
+
+  "permissions": [
+    "storage",
+    "webRequest",
+    "webRequestBlocking",
+    "http://*/*",
+    "https://*/*"
+  ]
+}
