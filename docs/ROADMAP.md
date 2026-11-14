@@ -31,11 +31,16 @@ enough. Keep counters in memory; no per-request storage writes.
 
 **Impact:** low–medium (trust and debugging). **Effort:** medium.
 
-### Import/export full settings
+### Import/export full settings (queued)
 
-The exclusion list already has plain-text import/export. A JSON format for all
-settings would also cover lifetime, SWR and resource-type choices. **Impact:**
-low. **Effort:** small–medium.
+The exclusion list already has plain-text import/export. A separate JSON
+snapshot should cover every user-editable setting: enabled, duration, SWR,
+fingerprint-only, resource types, safety toggles and debug logging. Include a
+format version, validate and clamp values on import, and decide whether import
+merges or replaces. Keep the text exclusion import/export for its
+human-editable workflow.
+
+**Impact:** low. **Effort:** small–medium.
 
 ### Keyboard shortcuts
 
