@@ -2,28 +2,40 @@
 
 ## The short version
 
-Firefox release builds only install add-ons that **Mozilla has signed**. The
-`dist/cache_even_longer-2.1.0.xpi` produced by this repository is unsigned, so
-**“Install Add-on From File…” will always refuse it**. That is Mozilla’s
-signature policy, not a fault in the XPI: the package is valid and Mozilla’s own
-linter reports zero errors.
+Firefox release builds only install add-ons that **Mozilla has signed**. Version
+2.1.0 is already signed and published:
 
-There are two practical routes:
+- [Cache even Longer on AMO](https://addons.mozilla.org/en-US/firefox/addon/cache-even-longer/)
+- [Signed XPI on GitHub](https://github.com/EricBright/cache-even-longer/releases/tag/v2.1.0)
 
-1. **Temporary install** through `about:debugging` — works immediately in any
-   Firefox, lasts until Firefox restarts, no account needed.
-2. **Permanent install** after signing through addons.mozilla.org (AMO) — free,
-   needs an AMO account and API key, and produces a normal signed XPI.
+Most users should install the published build (Route 1). A local `npm run build`
+is unsigned and cannot be installed permanently; use it only for temporary
+testing.
 
-A third route, for developers, launches Firefox with a temporary profile and
-loads the add-on automatically (`npm run dev`).
+- **Route 1:** install the published build — recommended for users.
+- **Route 2:** temporary install from source — for testing local changes.
+- **Route 3:** sign a new version through AMO — for maintainers.
+- **Route 4:** Developer Edition or Nightly — unsigned testing.
+- **Route 5:** `web-ext run` — live development.
 
 > The original `cache-longer-source/cache_longer-1.0.xpi` installs because
 > Mozilla signed _that exact file_. Editing any byte — including changing the
 > version number — invalidates its signature. A signature cannot be copied to a
 > new build; only AMO can issue a new one.
 
-## Route 1 — temporary install (recommended for testing)
+## Route 1 — install the published build (recommended)
+
+1. Open the [AMO listing](https://addons.mozilla.org/en-US/firefox/addon/cache-even-longer/).
+2. Click **Add to Firefox** and confirm the permission prompt.
+3. The add-on is installed permanently and updates through AMO.
+
+The exact signed XPI is also attached to the
+[v2.1.0 GitHub release](https://github.com/EricBright/cache-even-longer/releases/tag/v2.1.0).
+To use that copy, download `cache_even_longer-2.1.0.xpi`, open `about:addons`,
+click the gear icon → **Install Add-on From File…**, and select the file. It is
+the same Mozilla-signed package, not a separate build.
+
+## Route 2 — temporary install (development)
 
 1. Open `about:debugging#/runtime/this-firefox` in Firefox.
 2. Click **Load Temporary Add-on…**.
@@ -43,18 +55,16 @@ What to expect:
   **Reload** in the same profile. They may not survive a full Firefox restart.
 - `about:addons` may show the add-on with a “temporary” marker.
 
-This is the only route that works in a normal release Firefox without an AMO
-account.
+This is the only route that tests local source changes without signing them.
 
-## Route 2 — permanent install through AMO signing
+## Route 3 — sign a new version through AMO (maintainers)
 
-AMO can sign an **unlisted** (“self-distributed”) add-on. The resulting XPI is
-signed by Mozilla and installs in release Firefox like any other add-on. It is
-not listed in AMO search unless you choose the listed channel. The submission
-checklist, ID/ownership decisions and listing copy are in
-[AMO_SUBMISSION.md](AMO_SUBMISSION.md).
+Version 2.1.0 is already signed. Skip this route unless you are publishing a new
+version. The manifest ID belongs to the listed add-on, so `npm run sign`
+submits the new version to that listing. Use `npm run sign:unlisted` only for a
+self-distributed build.
 
-### 2.1 Create the credentials
+### 3.1 Create the credentials
 
 1. Sign in at <https://addons.mozilla.org/developers/>.
 2. Create an API key at
@@ -63,40 +73,24 @@ checklist, ID/ownership decisions and listing copy are in
 3. Keep them out of shell history if you can: put them in environment variables
    or a local untracked file.
 
-### 2.2 Decide on the add-on ID first
+### 3.2 Check the add-on ID
 
-The manifest currently uses a GUID generated specifically for this fork:
+The published fork uses this GUID:
 
 ```json
 "id": "{b2aeb8c2-b8ec-4375-afc3-21d58bcc6b3a}"
 ```
 
-You do **not** need to request this from Mozilla. An add-on ID is a string you
-choose; AMO only checks that it is unique when it first signs that ID. A random
-UUID is effectively guaranteed to be unique and does not imply ownership of
-anyone’s domain.
+Keep it for updates. Changing the ID creates a different add-on from AMO’s point
+of view: stored settings do not carry over and it cannot be submitted as an
+update to the existing listing.
 
-Two accepted forms:
+### 3.3 Bump the version
 
-- **GUID:** `{8-4-4-4-12 hexadecimal digits}` — generated locally, as above.
-- **Email-style:** `cache-longer@your-domain.example` — use a domain you
-  control, although AMO does not verify domain ownership.
+Bump `version` in both `src/manifest.json` and `package.json` before signing.
+AMO rejects a version that already exists.
 
-Generate your own GUID with Node:
-
-```sh
-node -e "console.log('{'+require('node:crypto').randomUUID()+'}')"
-```
-
-Then replace the `id` in `src/manifest.json` and rebuild. Changing the ID later
-makes it a different add-on from AMO’s point of view: stored settings do not
-carry over and it cannot be submitted as an update to the previous identity.
-
-**If you own the original AMO listing**, use its GUID
-`{d533177a-94cc-4e48-8e75-3187f0a81236}` instead and submit 2.1.0 as an
-update. Otherwise, keep the generated fork GUID.
-
-### 2.3 Sign
+### 3.4 Sign
 
 ```sh
 cd cache-even-longer
@@ -109,15 +103,22 @@ npm run sign
 `npm run sign` runs:
 
 ```sh
-web-ext sign --source-dir src --artifacts-dir dist/signed --channel unlisted
+web-ext sign --source-dir src --artifacts-dir dist/signed --channel listed
+```
+
+For a self-distributed build instead:
+
+```sh
+npm run sign:unlisted
+# web-ext sign ... --channel unlisted
 ```
 
 AMO validates the package, signs it, and `web-ext` downloads the signed XPI into
-`dist/signed/`. The file name usually ends in `-an+fx.xpi`; that is the file to
-install. The unsigned `dist/cache_even_longer-2.1.0.xpi` remains in `dist/` for
-reference and should not be confused with the signed copy.
+`dist/signed/`. The filename varies; for the listed 2.1.0 build it is
+`cache_even_longer-2.1.0.xpi`. Use the file AMO provides, not the unsigned
+`dist/cache_even_longer-<version>.xpi` build.
 
-### 2.4 Install the signed file
+### 3.5 Install the signed file
 
 1. Open `about:addons`.
 2. Click the gear icon → **Install Add-on From File…**.
@@ -127,13 +128,28 @@ reference and should not be confused with the signed copy.
 Firefox now treats it as a normal add-on: it survives restarts and updates
 through AMO if you keep the same ID and versioning.
 
-### 2.5 Manual alternative
+### 3.6 Manual alternative
 
-If you prefer the web UI, upload the unsigned ZIP/XPI as a new add-on at
-<https://addons.mozilla.org/developers/addon/submit/> and choose
-**“On your own”** (unlisted). AMO returns a signed XPI to download.
+If you prefer the web UI, upload the unsigned ZIP/XPI at
+<https://addons.mozilla.org/developers/addon/submit/>. Choose the listed channel
+to update the public listing, or **“On your own”** for a self-distributed build.
+AMO returns a signed XPI to download.
 
-## Route 3 — Developer Edition or Nightly
+### 3.7 Mirror the signed XPI on GitHub (optional)
+
+AMO remains the canonical download and update channel. To keep a GitHub mirror:
+
+1. Download the signed XPI from AMO: **Developer Hub → Manage Status &
+   Versions → version → Files**.
+2. Verify that it contains `META-INF/` signature entries.
+3. Record its SHA-256 checksum.
+4. Create a GitHub release tagged `v<version>` and attach the signed XPI and
+   checksum file. Link to the AMO listing in the release notes.
+
+Do not attach the unsigned `dist/cache_even_longer-<version>.xpi` as the install
+asset; Firefox will refuse it.
+
+## Route 4 — Developer Edition or Nightly
 
 Developer Edition and Nightly can be configured to allow unsigned add-ons:
 
@@ -143,9 +159,9 @@ Developer Edition and Nightly can be configured to allow unsigned add-ons:
 
 This restriction is deliberately not disableable in release Firefox. Do not
 turn it off in a daily-use browser just to install one add-on; prefer Route 1 or
-Route 2.
+Route 3.
 
-## Route 4 — live development with `web-ext run`
+## Route 5 — live development with `web-ext run`
 
 ```sh
 cd cache-even-longer
@@ -164,6 +180,10 @@ FIREFOX_BIN=/path/to/firefox npm run dev
 
 ## Verifying the package before installing
 
+The checks below apply to a locally built unsigned XPI. A signed AMO download
+will additionally contain `META-INF/`; that directory is the signature, not
+junk.
+
 ```sh
 npm run check     # manifest, referenced files, JS syntax
 npm run lint      # Mozilla web-ext lint
@@ -171,7 +191,7 @@ npm run build     # dist/cache_even_longer-2.1.0.xpi + .sha256
 unzip -l dist/cache_even_longer-2.1.0.xpi
 ```
 
-The archive should have `manifest.json` at its root and no `__MACOSX/`,
+The unsigned archive should have `manifest.json` at its root and no `__MACOSX/`,
 `META-INF/` or `.DS_Store` entries.
 
 `npm run lint` reports **0 errors and 2 warnings**:
@@ -216,7 +236,7 @@ the correct declaration either way.
 
 | Symptom | Likely cause | What to do |
 | --- | --- | --- |
-| “This add-on could not be installed because it appears to be corrupt.” or “not verified” | The XPI is unsigned. | Use Route 1, or sign it (Route 2). |
+| “This add-on could not be installed because it appears to be corrupt.” or “not verified” | The XPI is unsigned. | Install the published build (Route 1), or sign a new version (Route 3). |
 | “This add-on is not compatible with your version of Firefox.” | Firefox is older than `strict_min_version` (115), or the build targets a platform you did not declare. | Update Firefox or lower `strict_min_version` in `src/manifest.json` and rebuild. |
 | AMO says the add-on ID is already in use. | The ID belongs to another AMO account. | Change `browser_specific_settings.gecko.id` and sign again. |
 | AMO rejects `data_collection_permissions`. | Missing or malformed declaration. | Keep `"required": ["none"]`; `npm run check` enforces it. |

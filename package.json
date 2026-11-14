@@ -10,7 +10,8 @@
     "build": "node scripts/build.mjs",
     "lint": "web-ext lint --source-dir src",
     "dev": "web-ext run --source-dir src --start-url http://127.0.0.1:8787/",
-    "sign": "web-ext sign --source-dir src --artifacts-dir dist/signed --channel unlisted",
+    "sign": "web-ext sign --source-dir src --artifacts-dir dist/signed --channel listed",
+    "sign:unlisted": "web-ext sign --source-dir src --artifacts-dir dist/signed --channel unlisted",
     "icons": "sh scripts/render-icons.sh",
     "test-server": "node scripts/test-server.mjs"
   },

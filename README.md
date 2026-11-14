@@ -26,10 +26,11 @@ list is in [docs/AUDIT.md](docs/AUDIT.md).
 - **Force refresh remains untouched**: `immutable` is preserved if the origin
   sends it, but never added.
 
-> **Installing it:** a rebuilt XPI is unsigned, and release Firefox only installs
-> Mozilla-signed add-ons. Use the temporary `about:debugging` route, or sign the
-> package through AMO. Both are documented step by step in
-> [docs/INSTALL.md](docs/INSTALL.md).
+> **Installing it:** 2.1.0 is published and Mozilla-signed on
+> [addons.mozilla.org](https://addons.mozilla.org/en-US/firefox/addon/cache-even-longer/).
+> The same signed XPI is attached to the
+> [v2.1.0 GitHub release](https://github.com/EricBright/cache-even-longer/releases/tag/v2.1.0).
+> A locally rebuilt XPI is unsigned; use `about:debugging` for development.
 
 ## What changed from 1.0
 
@@ -49,10 +50,17 @@ list is in [docs/AUDIT.md](docs/AUDIT.md).
 
 ## Install
 
-There are two supported ways to run it; the full details, troubleshooting table
-and explanations are in [docs/INSTALL.md](docs/INSTALL.md).
+The published 2.1.0 build is signed by Mozilla. The same signed file is mirrored
+on GitHub; a locally rebuilt XPI is unsigned.
 
-**Temporary (works now, any Firefox, no account):**
+**Published build (recommended):**
+
+[Install Cache even Longer from AMO](https://addons.mozilla.org/en-US/firefox/addon/cache-even-longer/).
+AMO handles updates. The exact signed XPI is also attached to the
+[v2.1.0 release](https://github.com/EricBright/cache-even-longer/releases/tag/v2.1.0);
+download it and use **Install Add-on From File…** if you prefer the GitHub copy.
+
+**Temporary (development, no account):**
 
 1. Open `about:debugging#/runtime/this-firefox`.
 2. Click **Load Temporary Add-on…**.
@@ -62,7 +70,7 @@ and explanations are in [docs/INSTALL.md](docs/INSTALL.md).
 
 Temporary add-ons disappear when Firefox restarts.
 
-**Permanent (requires AMO signing):**
+**Build and sign a new version (maintainers):**
 
 ```sh
 npm install
@@ -71,15 +79,20 @@ export WEB_EXT_API_SECRET="…"
 npm run sign
 ```
 
-Install the signed `.xpi` produced in `dist/signed/` via
-`about:addons` → gear icon → **Install Add-on From File…**. An unsigned
-`dist/cache_even_longer-2.1.0.xpi` is also produced by `npm run build`, but Firefox
-will refuse to install it permanently — that is Mozilla’s signature policy, not
-a packaging error. See [docs/INSTALL.md](docs/INSTALL.md) for the install
-routes, [docs/AMO_SUBMISSION.md](docs/AMO_SUBMISSION.md) for the submission
-checklist and ID/licence decisions, and
+`npm run sign` submits the current version to the **listed** AMO add-on; use
+`npm run sign:unlisted` only for a self-distributed build. The signed `.xpi` is
+written to `dist/signed/` and can be installed via `about:addons` → gear icon →
+**Install Add-on From File…**. A local `npm run build` still produces an
+unsigned `dist/cache_even_longer-2.1.0.xpi`, which Firefox refuses to install
+permanently — that is Mozilla’s signature policy, not a packaging error.
+
+See [docs/INSTALL.md](docs/INSTALL.md) for the install routes,
+[docs/AMO_SUBMISSION.md](docs/AMO_SUBMISSION.md) for the submission checklist
+and ID/licence decisions, and
 [docs/RELEASE_DESCRIPTION.md](docs/RELEASE_DESCRIPTION.md) for copy-ready AMO
 listing text and release notes.
+
+See [docs/TESTING.md](docs/TESTING.md) for the manual Firefox checklist.
 
 ## Settings
 
@@ -189,7 +202,8 @@ npm run build        # dist/cache_even_longer-2.1.0.xpi + .sha256
 npm run lint         # Mozilla web-ext lint (0 errors, 2 expected warnings)
 npm run test-server  # fixtures on http://127.0.0.1:8787/
 npm run dev          # temporary Firefox via web-ext (needs npm install + Firefox)
-npm run sign         # AMO unlisted signing (needs API credentials)
+npm run sign          # submit a new version to the listed AMO add-on
+npm run sign:unlisted # self-distributed signing (not listed on AMO)
 npm run icons        # re-render PNGs from src/icons/{icon,toolbar}.svg
 ```
 

@@ -4,6 +4,11 @@ Mozilla is the only party that can produce a signature release Firefox accepts.
 This guide covers both submission routes and the decisions that have to be made
 before uploading.
 
+> **Status:** Cache even Longer 2.1.0 was accepted as a **listed** add-on and is
+> live at <https://addons.mozilla.org/en-US/firefox/addon/cache-even-longer/>.
+> The routes below remain the checklist for future versions; Route C is the
+> canonical path for this fork.
+
 ## Which route?
 
 | | Unlisted (self-distributed) | Listed on AMO |
@@ -14,9 +19,9 @@ before uploading.
 | Updates | You distribute the signed file; optional `update_url` | AMO hosts and updates it |
 | Best for | A personal fork, internal use, testing | A maintained public add-on |
 
-For a fork that is not the original author’s, **unlisted** is the honest and
-simplest route: Mozilla signs the build, but it is not presented as a new public
-product using someone else’s name.
+For a fork, either route is possible. This fork was accepted as a **listed**
+add-on with a distinct name, GUID and clear attribution. Unlisted remains an
+option when a separate public listing is not wanted.
 
 ## What the existing listing tells us
 
@@ -84,8 +89,8 @@ uploaded as an update to the old listing.
    npm run build
    ```
 
-4. Upload `dist/cache_even_longer-2.1.0.xpi`. It is a ZIP with `manifest.json` at its
-   root; AMO accepts `.xpi` and `.zip`.
+4. Upload `dist/cache_even_longer-<version>.xpi`. It is a ZIP with
+   `manifest.json` at its root; AMO accepts `.xpi` and `.zip`.
 5. If you changed source files, rebuild; do not upload a stale artifact.
 
 The extension is plain, readable JavaScript with no bundling or minification,
@@ -113,14 +118,19 @@ available anyway; reviewers appreciate reproduction instructions.
 cd cache-even-longer
 export WEB_EXT_API_KEY="user:12345:67"
 export WEB_EXT_API_SECRET="0123456789abcdef..."
-npm run sign
+npm run sign:unlisted
 ```
 
 The signed file is written to `dist/signed/`. The first run with a brand-new ID
 creates a new unlisted add-on; an ID already claimed by another account fails.
-This is the same submission as Route A, just automated.
+This is the same submission as Route A, just automated. For an update to the
+existing listed add-on, use `npm run sign` instead.
 
 ## Route C — listed on AMO
+
+For a new version of the existing listing, use **Upload a New Version** instead
+of creating another add-on; `npm run sign` performs the same submission from the
+command line. The fields below are for the initial listing.
 
 Use **Submit a New Add-on → “On this site”**. You will need:
 
